@@ -7,8 +7,27 @@
 #include <iostream>
 #include <unordered_map>
 #include <stack>
+#include <string>
+#include <set>
 using std::cout;
 using std::endl;
+
+bool isBalanced(const std::string &s)
+{
+    int n = s.length();
+    std::stack<char> st;
+    for (int i = 0; i < n; ++i)
+    {
+        char c = s.at(i);
+        if (st.empty())
+            st.push(c);
+        else if (st.top() == '(' && c == ')' || st.top() == '{' && c == '}' || st.top() == '[' && c == ']')
+            st.pop();
+        else
+            st.push(c);
+    }
+    return st.size() == 0;
+}
 
 template <typename T>
 std::vector<std::pair<T, int>> topKFrequent(std::vector<T> &a)
@@ -27,28 +46,8 @@ std::vector<std::pair<T, int>> topKFrequent(std::vector<T> &a)
     return v;
 }
 
-template <typename T>
-void printValues(T &t)
-{
-    for (auto it = t.begin(); it < t.end(); ++it)
-    {
-        cout << *it << " ";
-    }
-    cout << endl;
-}
-
-template <typename T>
-void printValues(std::list<T> &t)
-{
-    for (auto it = t.begin(); it != t.end(); ++it)
-    {
-        cout << *it << " ";
-    }
-    cout << endl;
-}
-
 template <typename T, typename Y>
-void printValues(std::vector<std::pair<T, Y>> &t)
+void printValues(const std::vector<std::pair<T, Y>> &t)
 {
     for (auto it = t.begin(); it != t.end(); ++it)
     {
@@ -64,6 +63,36 @@ void printValues(std::stack<T> s)
     {
         cout << s.top() << " ";
         s.pop();
+    }
+    cout << endl;
+}
+
+template <typename T>
+void printValues(std::priority_queue<T> s)
+{
+    while (!s.empty())
+    {
+        cout << s.top() << " ";
+        s.pop();
+    }
+}
+
+template <typename T>
+void printValues(std::priority_queue<T, std::vector<T>, std::greater<T>> s)
+{
+    while (!s.empty())
+    {
+        cout << s.top() << " ";
+        s.pop();
+    }
+}
+
+template <typename T>
+void printValues(const T &t)
+{
+    for (auto it = t.begin(); it != t.end(); ++it)
+    {
+        cout << *it << " ";
     }
     cout << endl;
 }
@@ -228,4 +257,73 @@ int main()
          << "The top element of the stack is: " << s.top() << " The size of this stack is: " << s.size() << endl;
     cout << "The stack in LIFO order is: ";
     printValues(s);
+
+    // Balanced Bracket String using a stack
+    cout << "The String {{[[(())]]}} is balanced? " << isBalanced("{{[[(())]]}}") << endl;
+    cout << "The String {[(])} is balanced? " << isBalanced("{[(])}") << endl;
+
+    // Priority Queue
+    std::priority_queue<int> q; // This is a max Heap
+    for (int i = 1; i <= 5; ++i)
+        q.push(i * 10);
+    q.push(1);
+    cout << "Priority Queue Order is: ";
+    printValues(q);
+    cout << endl;
+    // Using a Priority Queue we can make a Min Heap
+
+    std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+    for (int i = 0; i <= 5; ++i)
+        minHeap.push(i * 20);
+    cout << "Min Heap Values are: ";
+    printValues(minHeap);
+    cout << endl;
+
+    // Sets
+    std::set<int> setS;
+    setS.insert(5);
+    setS.insert(39);
+    setS.insert(64);
+    setS.insert(82);
+    setS.insert(35);
+    setS.insert(54);
+    setS.insert(5);
+    cout << "The Set values are: ";
+    printValues<std::set<int>>(setS);
+
+    // We can specify the storage order via
+    std::set<int, std::greater<int>> setS2;
+    setS2.insert(5);
+    setS2.insert(39);
+    setS2.insert(64);
+    setS2.insert(82);
+    setS2.insert(35);
+    setS2.insert(54);
+    setS2.insert(5);
+    cout << "The Set values are: ";
+    printValues(setS2);
+
+    cout << "Erasing element 5 from the set: ";
+    setS.erase(5);
+    printValues(setS);
+    if (setS.find(5) == setS.end())
+        cout << "Element 5 is not in the set " << endl;
+
+    // MultiSet, a Set that allows Duplicates
+    std::multiset<int> multiSet;
+    multiSet.insert(5);
+    multiSet.insert(39);
+    multiSet.insert(64);
+    multiSet.insert(82);
+    multiSet.insert(35);
+    multiSet.insert(54);
+    multiSet.insert(5);
+    cout << "The multiset elements are: ";
+    printValues(multiSet);
+    multiSet.erase(5);
+    cout << "MultiSet Erase 5: ";
+    printValues(multiSet);
+    multiSet.erase(multiSet.begin(), multiSet.find(54));
+    cout << "MultiSet Erase all elements less than 54: ";
+    printValues(multiSet);
 }

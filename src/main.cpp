@@ -9,6 +9,7 @@
 #include <stack>
 #include <string>
 #include <set>
+#include <unordered_set>
 using std::cout;
 using std::endl;
 
@@ -326,4 +327,26 @@ int main()
     multiSet.erase(multiSet.begin(), multiSet.find(54));
     cout << "MultiSet Erase all elements less than 54: ";
     printValues(multiSet);
+
+    // Skipping map, refer back to oop project for example
+
+    // Sorting Strings by writing a Custom Sort Method, same thing as one of the previous methods where you provide a boolean function as the conditional comparasion
+
+    std::unordered_set<std::string> stringSet;
+    stringSet.insert("Study");
+    stringSet.insert("Tonight");
+    stringSet.insert("Amity");
+    stringSet.insert("Abolisher");
+    stringSet.insert("C++");
+    stringSet.insert("Hi");
+    cout << "Elements before sort: ";
+    printValues(stringSet);
+
+    std::vector<std::string> stringVector(stringSet.begin(), stringSet.end()); // initialize using set
+    cout << "Unsorted Vector: ";
+    printValues(stringVector);
+    sort(stringVector.begin(), stringVector.end(), [](const std::string &x, const std::string &y) // Lambda Sort method
+         { return x.size() > y.size(); });
+    cout << "Sorted Vector: ";
+    printValues(stringVector);
 }

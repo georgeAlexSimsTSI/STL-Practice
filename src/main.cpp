@@ -10,6 +10,7 @@
 #include <string>
 #include <set>
 #include <unordered_set>
+#include "test.cpp"
 using std::cout;
 using std::endl;
 
@@ -47,57 +48,59 @@ std::vector<std::pair<T, int>> topKFrequent(std::vector<T> &a)
     return v;
 }
 
-template <typename T, typename Y>
-void printValues(const std::vector<std::pair<T, Y>> &t)
+namespace printers
 {
-    for (auto it = t.begin(); it != t.end(); ++it)
+    template <typename T, typename Y>
+    void printValues(const std::vector<std::pair<T, Y>> &t)
     {
-        cout << "(" << it->first << "," << it->second << ") ";
+        for (auto it = t.begin(); it != t.end(); ++it)
+        {
+            cout << "(" << it->first << "," << it->second << ") ";
+        }
+        cout << endl;
     }
-    cout << endl;
-}
 
-template <typename T>
-void printValues(std::stack<T> s)
-{
-    while (!s.empty())
+    template <typename T>
+    void printValues(std::stack<T> s)
     {
-        cout << s.top() << " ";
-        s.pop();
+        while (!s.empty())
+        {
+            cout << s.top() << " ";
+            s.pop();
+        }
+        cout << endl;
     }
-    cout << endl;
-}
 
-template <typename T>
-void printValues(std::priority_queue<T> s)
-{
-    while (!s.empty())
+    template <typename T>
+    void printValues(std::priority_queue<T> s)
     {
-        cout << s.top() << " ";
-        s.pop();
+        while (!s.empty())
+        {
+            cout << s.top() << " ";
+            s.pop();
+        }
     }
-}
 
-template <typename T>
-void printValues(std::priority_queue<T, std::vector<T>, std::greater<T>> s)
-{
-    while (!s.empty())
+    template <typename T>
+    void printValues(std::priority_queue<T, std::vector<T>, std::greater<T>> s)
     {
-        cout << s.top() << " ";
-        s.pop();
+        while (!s.empty())
+        {
+            cout << s.top() << " ";
+            s.pop();
+        }
     }
-}
 
-template <typename T>
-void printValues(const T &t)
-{
-    for (auto it = t.begin(); it != t.end(); ++it)
+    template <typename T>
+    void printValues(const T &t)
     {
-        cout << *it << " ";
+        for (auto it = t.begin(); it != t.end(); ++it)
+        {
+            cout << *it << " ";
+        }
+        cout << endl;
     }
-    cout << endl;
 }
-
 struct employee
 {
     int empID;
@@ -155,25 +158,25 @@ int main()
     v.push_back(1);
     v.push_back(2);
     cout << "Vector 1 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     v = std::vector<int>{1, 2, 3, 4, 5};
     cout << "Vector 2 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     v = std::vector<int>(6, 10); // 6 elements all with the value of 10
     cout << "Vector 3 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     int a[] = {11, 22, 33};
     int n = sizeof(a) / sizeof(int);
     v = std::vector<int>(a, a + n);
     cout << "Vector 4 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
 
     // Find the minimum element in a Rotated Sorted Vector
 
     // e.g. 4,5,6,7,0,1,2 is a rotated version of 0,1,2,3,4,5,6,7
     v = std::vector<int>{4, 5, 6, 7, 1, 3, 2};
     cout << "Vector 5 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     int index = findMin(v);
     cout << "The Minimum element is found at index: " << index << " Value is: " << v[index] << endl;
 
@@ -182,7 +185,7 @@ int main()
 
     v = std::vector<int>{10, 12, 35, 65, 21, 90};
     cout << "Vector 6 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     cout << endl;
     std::vector<int>::iterator low;
     low = std::lower_bound(v.begin(), v.end(), 35);
@@ -193,7 +196,7 @@ int main()
     std::vector<int>::iterator high;
     sort(v.begin(), v.end());
     cout << "Vector 7 elements are: " << endl;
-    printValues(v);
+    printers::printValues(v);
     high = std::upper_bound(v.begin(), v.end(), 35);
     cout << "The index (starting from 0) of the upper_bound of 35 is: " << (high - v.begin()) << endl; // by definition excludes the value itself
 
@@ -205,15 +208,15 @@ int main()
         l2.push_front(i * 20);
     }
     cout << "List values pushed back: ";
-    printValues(l1);
+    printers::printValues(l1);
     cout << "List values pushed front: ";
-    printValues(l2);
+    printers::printValues(l2);
     cout << "List 1 after being reversed is: ";
     l1.reverse();
-    printValues(l1);
+    printers::printValues(l1);
     cout << "List 2 after being sorted is: ";
     l2.sort();
-    printValues(l2);
+    printers::printValues(l2);
 
     // Pair, I want to skip this
     std::vector<std::pair<int, int>> v2;
@@ -222,10 +225,10 @@ int main()
     v2.push_back(std::make_pair(3, 6));
     v2.push_back(std::make_pair(2, 4));
     v2.push_back(std::make_pair(5, 25));
-    printValues(v2);
+    printers::printValues(v2);
     cout << "Sorting the elements by the first value in ascending order: ";
     sort(v2.begin(), v2.end());
-    printValues(v2);
+    printers::printValues(v2);
     v2.clear();
     v2.push_back(std::make_pair(1, 5));
     v2.push_back(std::make_pair(1, 3));
@@ -234,14 +237,14 @@ int main()
     v2.push_back(std::make_pair(5, 24));
     cout << "Sorting the elements by the first value in ascending order: ";
     sort(v2.begin(), v2.end(), pairCmp<int>); // providing my own sorting condition to take the second value into consideration
-    printValues(v2);
+    printers::printValues(v2);
 
     // Find the Top K most frequent Elements
 
     v = std::vector<int>{1, 2, 3, 1, 2, 1};
-    printValues(v);
+    printers::printValues(v);
     v2 = topKFrequent(v);
-    printValues(v2);
+    printers::printValues(v2);
 
     for (auto i : v2)
     {
@@ -257,7 +260,7 @@ int main()
     cout << endl
          << "The top element of the stack is: " << s.top() << " The size of this stack is: " << s.size() << endl;
     cout << "The stack in LIFO order is: ";
-    printValues(s);
+    printers::printValues(s);
 
     // Balanced Bracket String using a stack
     cout << "The String {{[[(())]]}} is balanced? " << isBalanced("{{[[(())]]}}") << endl;
@@ -269,7 +272,7 @@ int main()
         q.push(i * 10);
     q.push(1);
     cout << "Priority Queue Order is: ";
-    printValues(q);
+    printers::printValues(q);
     cout << endl;
     // Using a Priority Queue we can make a Min Heap
 
@@ -277,7 +280,7 @@ int main()
     for (int i = 0; i <= 5; ++i)
         minHeap.push(i * 20);
     cout << "Min Heap Values are: ";
-    printValues(minHeap);
+    printers::printValues(minHeap);
     cout << endl;
 
     // Sets
@@ -290,7 +293,7 @@ int main()
     setS.insert(54);
     setS.insert(5);
     cout << "The Set values are: ";
-    printValues<std::set<int>>(setS);
+    printers::printValues<std::set<int>>(setS);
 
     // We can specify the storage order via
     std::set<int, std::greater<int>> setS2;
@@ -302,11 +305,11 @@ int main()
     setS2.insert(54);
     setS2.insert(5);
     cout << "The Set values are: ";
-    printValues(setS2);
+    printers::printValues(setS2);
 
     cout << "Erasing element 5 from the set: ";
     setS.erase(5);
-    printValues(setS);
+    printers::printValues(setS);
     if (setS.find(5) == setS.end())
         cout << "Element 5 is not in the set " << endl;
 
@@ -320,13 +323,13 @@ int main()
     multiSet.insert(54);
     multiSet.insert(5);
     cout << "The multiset elements are: ";
-    printValues(multiSet);
+    printers::printValues(multiSet);
     multiSet.erase(5);
     cout << "MultiSet Erase 5: ";
-    printValues(multiSet);
+    printers::printValues(multiSet);
     multiSet.erase(multiSet.begin(), multiSet.find(54));
     cout << "MultiSet Erase all elements less than 54: ";
-    printValues(multiSet);
+    printers::printValues(multiSet);
 
     // Skipping map, refer back to oop project for example
 
@@ -340,13 +343,15 @@ int main()
     stringSet.insert("C++");
     stringSet.insert("Hi");
     cout << "Elements before sort: ";
-    printValues(stringSet);
+    printers::printValues(stringSet);
 
     std::vector<std::string> stringVector(stringSet.begin(), stringSet.end()); // initialize using set
     cout << "Unsorted Vector: ";
-    printValues(stringVector);
+    printers::printValues(stringVector);
     sort(stringVector.begin(), stringVector.end(), [](const std::string &x, const std::string &y) // Lambda Sort method
          { return x.size() > y.size(); });
     cout << "Sorted Vector: ";
-    printValues(stringVector);
+    printers::printValues(stringVector);
+
+    printers::print("Hello World!");
 }

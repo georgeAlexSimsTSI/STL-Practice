@@ -10,6 +10,8 @@
 #include <string>
 #include <set>
 #include <unordered_set>
+#include <sstream>
+#include <limits>
 #include "test.cpp"
 using std::cout;
 using std::endl;
@@ -101,6 +103,26 @@ namespace printers
         cout << endl;
     }
 }
+
+namespace userInput
+{
+    template <typename T>
+    void validateInput(T &val, const std::string &prompt)
+    {
+        while (true)
+        {
+            std::cout << prompt;
+            if (std::cin >> val)
+                break;
+            std::cout << "Invalid Input, Enter a Valid Input" << endl;
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+}
+
 struct employee
 {
     int empID;
@@ -136,6 +158,26 @@ bool pairCmp(std::pair<T, T> x, std::pair<T, T> y) // different sorting conditio
         return x.first < y.first; // return the one with smaller first element
     else
         return x.second < y.second; // if first element is equal then return the one with smaller second element
+}
+
+namespace customException
+{
+    class MyException : public std::exception
+    {
+        int x;
+        std::string str;
+
+    public:
+        MyException(const int &x) : x(x) { str = ""; }
+        MyException(const std::string &str) : str(str) { x = 0; }
+        const char *what()
+        {
+            return "Custom Exception";
+        }
+
+        std::string getStr() { return str; }
+        int getX() { return x; }
+    };
 }
 
 int main()
@@ -353,5 +395,29 @@ int main()
     cout << "Sorted Vector: ";
     printers::printValues(stringVector);
 
-    printers::print("Hello World!");
+    std::string message;
+    userInput::validateInput(message, "Enter a message: ");
+    printers::print(message);
+
+    try
+    {
+        throw customException::MyException("Hello There");
+    }
+    catch (customException::MyException &e)
+    {
+        cout << e.what() << endl;
+        cout << e.getStr() << endl;
+        cout << e.getX() << endl;
+    }
+
+    try
+    {
+        throw customException::MyException(7);
+    }
+    catch (customException::MyException &e)
+    {
+        cout << e.what() << endl;
+        cout << e.getStr() << endl;
+        cout << e.getX() << endl;
+    }
 }

@@ -168,8 +168,8 @@ namespace customException
         std::string str;
 
     public:
-        MyException(const int &x) : x(x), str("") {}
-        MyException(const std::string &str) : str(str), x(0) {}
+        explicit MyException(const int &x) : x(x), str("") {}
+        explicit MyException(const std::string &str) : x(0),str(str){}
         const char *what()
         {
             return "Custom Exception";
